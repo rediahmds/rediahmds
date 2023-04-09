@@ -2,9 +2,9 @@
 
 ## 👋 Hello, World!
 
-I'm a passionate self-taught developer who loves to create and innovate. I never stopped learning new skills and technologies. I'm confident in my abilities and always eager to take on new challenges. I enjoy solving problems and finding the best solutions for any project. Whether it's building a website, or an app, I always strive to deliver high-quality work. I'm always open to feedback and collaboration, and I'm always looking for new opportunities to grow and improve as a software developer.
+I'm a passionate self-taught developer who loves to create and innovate. I never stopped learning new skills and technologies. I'm confident in my abilities and     always eager to take on new challenges. I enjoy solving problems and finding the best solutions for any project. Whether it's building a website, or an app, I always   strive to deliver high-quality work. I'm always open to feedback and collaboration, and I'm always looking for new opportunities to grow and improve as a software     developer.
 
-## Tech Stack I've Worked With
+## Technologies I've Worked With
 
 [![My Skills](https://skillicons.dev/icons?i=html,css,bootstrap,nodejs,express,md,postman,mongodb,replit,vscode,idea,java,python,powershell)](https://skillicons.dev)
 
@@ -26,4 +26,5 @@ Here are some ideas to get you started:
 
 ## Stats
 
-[![GitHub Trends SVG](https://api.githubtrends.io/user/svg/rediahmds/langs?time_range=one_year&theme=dark)](https://githubtrends.io)
+<img align="left" src="https://api.githubtrends.io/user/svg/rediahmds/langs?time_range=one_year&theme=dark" alt="Language Stats" />
+<img align="center" src="https://streak-stats.demolab.com?user=rediahmds&theme=merko&border_radius=5&mode=weekly" />
