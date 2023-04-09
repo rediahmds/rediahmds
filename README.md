@@ -1,4 +1,4 @@
-![Header](./profile-header.png)
+![Header](./profile-header.webp)
 
 ## 👋 Hello, World!
 
