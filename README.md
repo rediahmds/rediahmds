@@ -23,3 +23,7 @@ Here are some ideas to get you started:
 - 😄 Pronouns: ...
 - ⚡ Fun fact: ...
 -->
+
+## Stats
+
+[![GitHub Trends SVG](https://api.githubtrends.io/user/svg/rediahmds/langs?time_range=one_year&theme=dark)](https://githubtrends.io)
