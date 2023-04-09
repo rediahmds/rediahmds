@@ -6,7 +6,7 @@ I'm a passionate self-taught developer who loves to create and innovate. I never
 
 ## Technologies I've Worked With
 
-[![My Skills](https://skillicons.dev/icons?i=html,css,bootstrap,nodejs,express,md,postman,mongodb,replit,vscode,idea,java,python,powershell)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=html,css,bootstrap,nodejs,express,md,postman,mongodb,replit,vscode,idea,java,python,powershell&perline=5)](https://skillicons.dev)
 
 
 <!--
