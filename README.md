@@ -2,7 +2,7 @@
 
 ## 👋 Hello, World!
 
-I'm a passionate self-taught developer who loves to create and innovate. I never stopped learning new skills and technologies. I'm confident in my abilities and     always eager to take on new challenges. I enjoy solving problems and finding the best solutions for any project. Whether it's building a website, or an app, I always   strive to deliver high-quality work. I'm always open to feedback and collaboration, and I'm always looking for new opportunities to grow and improve as a software     developer.
+As a passionate self-taught developer, I love to create and innovate. I continuously learn new skills and technologies and am confident in my abilities. I eagerly take on new challenges and enjoy solving problems to find the best solutions for any project. Whether building a website or an app, I strive to deliver high-quality work. I am always open to feedback and collaboration and am constantly seeking new opportunities to grow and improve as a software developer
 
 ## Technologies I've Worked With
 
