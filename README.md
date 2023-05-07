@@ -2,7 +2,10 @@
 
 ## 👋 Hello, World!
 
-As a passionate self-taught developer, I love to create and innovate. I continuously learn new skills and technologies and am confident in my abilities. I eagerly take on new challenges and enjoy solving problems to find the best solutions for any project. Whether building a website or an app, I strive to deliver high-quality work. I am always open to feedback and collaboration and am constantly seeking new opportunities to grow and improve as a software developer
+- 👨‍💻 Self-taught developer who is pursuing to become a full-stack web developer
+- 🌱 Currently learning front end development with React.js and DSA
+- ⚡ Fun fact: Big fan of Real Madrid C.F and enjoy watching movies
+- 🧩 Loves solving problems, that is why I also enjoy competitive programming.
 
 ## Technologies I've Worked With
 
@@ -15,7 +18,7 @@ As a passionate self-taught developer, I love to create and innovate. I continuo
 Here are some ideas to get you started:
 
 - 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
+ ...
 - 👯 I’m looking to collaborate on ...
 - 🤔 I’m looking for help with ...
 - 💬 Ask me about ...
