@@ -3,7 +3,7 @@
 ## 👋 Hello, World!
 
 - 👨‍💻 Self-taught developer who is pursuing to become a full-stack web developer
-- 🌱 Currently learning front end development with React.js and DSA
+- 🌱 Currently learning backend development with node.js and DSA
 - ⚡ Fun fact: Big fan of Real Madrid C.F and enjoy watching movies
 - 🧩 Loves solving problems, that is why I also enjoy competitive programming.
 
