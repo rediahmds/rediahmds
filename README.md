@@ -9,7 +9,7 @@
 
 ## Technologies I've Worked With
 
-[![My Skills](https://skillicons.dev/icons?i=html,css,bootstrap,nodejs,express,md,postman,mongodb,replit,postgres,vscode,idea,java,python,powershell,next,ts,react,tailwind&perline=5)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=nodejs,express,md,postman,mongodb,replit,postgres,vscode,idea,java,python,powershell,next,ts,react,tailwind&perline=5)](https://skillicons.dev)
 
 
 <!--
