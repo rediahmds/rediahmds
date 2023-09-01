@@ -7,10 +7,9 @@
 - ⚡ Fun fact: Big fan of Real Madrid C.F and enjoy watching movies
 - 🧩 Loves solving problems, that is why I also enjoy competitive programming.
 
-## Technologies I've Worked With
+## 👨‍💻 Technologies I've Worked With
 
-[![My Skills](https://skillicons.dev/icons?i=nodejs,express,md,postman,mongodb,replit,postgres,vscode,idea,java,python,powershell,next,ts,react,tailwind&perline=5)](https://skillicons.dev)
-
+[![My Skills](https://skillicons.dev/icons?i=nodejs,express,md,postman,mongodb,replit,postgres,vscode,idea,java,python,powershell,next,ts,react,tailwind,c,cpp&perline=5)](https://skillicons.dev)
 
 <!--
 **rediahmds/rediahmds** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
@@ -27,7 +26,7 @@ Here are some ideas to get you started:
 - ⚡ Fun fact: ...
 -->
 
-## Stats
+## 📊 Stats
 
 <img align="left" src="https://api.githubtrends.io/user/svg/rediahmds/langs?time_range=one_year&theme=dark" alt="Language Stats" />
 <img align="center" src="https://streak-stats.demolab.com?user=rediahmds&theme=merko&border_radius=5&mode=weekly" />
