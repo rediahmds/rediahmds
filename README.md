@@ -27,6 +27,8 @@ Here are some ideas to get you started:
 -->
 
 ## 📊 Stats
+<div>
+  <img align="left" src="https://github-readme-stats-rediahmds.vercel.app/api?username=rediahmds&show_icons=true&theme=prussian" />
+ <img align="center" src="https://streak-stats.demolab.com?user=rediahmds&theme=merko&border_radius=5&mode=weekly" />
+</div>
 
-<img align="left" src="https://github-readme-stats-rediahmds.vercel.app/api?username=rediahmds&show_icons=true&theme=prussian" />
-<img align="center" src="https://streak-stats.demolab.com?user=rediahmds&theme=merko&border_radius=5&mode=weekly" />
