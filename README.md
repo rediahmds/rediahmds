@@ -28,14 +28,8 @@ Here are some ideas to get you started:
 
 ## 📊 Stats
 
-<div>
-  <img align="left" src="https://github-readme-stats-rediahmds.vercel.app/api?username=rediahmds&show_icons=true&theme=prussian" width="400" />
-  <img align="center" src="https://streak-stats.demolab.com?user=rediahmds&theme=merko&border_radius=5&mode=weekly" width="400" />
-</div>
+<!-- <img align="center" src="https://streak-stats.demolab.com?user=rediahmds&theme=merko&border_radius=5&mode=weekly" /> -->
 
-<br>
-
-<div>
-  <img align="left" src="https://github-readme-stats-rediahmds.vercel.app/api/top-langs?username=rediahmds&langs_count=8&hide=css,html" width="300" />
-</div>
+| <img align="center" src="https://github-readme-stats-rediahmds.vercel.app/api?username=rediahmds&show_icons=true&theme=transparent&hide_border=true" width="500" /> | <img align="left" src="https://github-readme-stats-rediahmds.vercel.app/api/top-langs?username=rediahmds&langs_count=8&hide=css,html&theme=transparent&layout=compact&hide_border=true" width="300" /> |
+| -------------- | -------------- |
 
