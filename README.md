@@ -9,7 +9,7 @@
 
 ## 👨‍💻 Technologies I've Worked With
 
-[![My Skills](https://skillicons.dev/icons?i=nodejs,express,md,postman,mongodb,replit,postgres,vscode,idea,java,python,powershell,next,ts,react,tailwind,qt,c,cpp&perline=5)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=nodejs,express,md,postman,mongodb,replit,postgres,vscode,idea,java,python,powershell,next,ts,react,jest,tailwind,qt,githubactions,rabbitmq,redis&perline=5)](https://skillicons.dev)
 
 <!--
 **rediahmds/rediahmds** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
