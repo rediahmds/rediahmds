@@ -34,6 +34,3 @@ Here are some ideas to get you started:
 
 | <img align="center" src="https://github-readme-stats-rediahmds.vercel.app/api?username=rediahmds&show_icons=true&theme=transparent&hide_border=true" width="400" /> | <img align="left" src="https://github-readme-stats-rediahmds.vercel.app/api/top-langs?username=rediahmds&langs_count=8&hide=css,html&theme=transparent&layout=compact&hide_border=true" width="300" /> |
 | -------------- | -------------- |
-
-<!-- Visitor count 90s style -->
-![Visitor Count](https://profile-counter.glitch.me/rediahmds/count.svg)
