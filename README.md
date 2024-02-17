@@ -15,7 +15,8 @@
 
 ## <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Envelope%20with%20Arrow.png" alt="Envelope with Arrow" width="30" /> How to Connect with me
 
-
+[![Gmail](https://skillicons.dev/icons?i=gmail)](mailto:ahmadredi67@gmail.com)
+[![Instagram](https://skillicons.dev/icons?i=instagram)](instagram.com/rediahmds)
 
 <!--
 **rediahmds/rediahmds** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
