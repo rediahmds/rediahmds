@@ -17,6 +17,7 @@
 
 [![Gmail](https://skillicons.dev/icons?i=gmail)](mailto:ahmadredi67@gmail.com)
 [![Instagram](https://skillicons.dev/icons?i=instagram)](https://instagram.com/rediahmds)
+[![LinkedIn](https://skillicons.dev/icons?i=linkedin)](https://www.linkedin.com/in/redi-ahmad-supriyatna-69a21b193/)
 
 <!--
 **rediahmds/rediahmds** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
