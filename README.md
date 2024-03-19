@@ -7,6 +7,8 @@
 - ⚡ Fun fact: Big fan of Real Madrid C.F and enjoy watching movies
 - 🧩 Loves solving problems, that is why I also enjoy competitive programming.
 
+### <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Musical%20Notes.png" alt="Musical Notes" width="25" height="30" /> Listen to music with me
+
 [![spotify-github-profile](https://spotify-github-profile.vercel.app/api/view?uid=8gbp5s41exz0qt834o71pgenk&cover_image=true&theme=novatorem&show_offline=true&background_color=121212&interchange=false&bar_color=53b14f&bar_color_cover=true)](https://github.com/kittinan/spotify-github-profile)
 
 ## <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People%20with%20professions/Man%20Technologist%20Medium%20Skin%20Tone.png" alt="Man Technologist Medium Skin Tone" width="30" /> Technologies I've Worked With
