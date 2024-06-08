@@ -13,7 +13,7 @@
 
 ## <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People%20with%20professions/Man%20Technologist%20Medium%20Skin%20Tone.png" alt="Man Technologist Medium Skin Tone" width="30" /> Technologies I've Worked With
 
-[![My Skills](https://skillicons.dev/icons?i=nodejs,express,md,postman,mongodb,replit,postgres,vscode,idea,java,python,powershell,next,ts,react,jest,tailwind,qt,githubactions,rabbitmq,redis&perline=5)](https://skillicons.dev)
+[![My Skills](https://skillicons.dev/icons?i=nodejs,express,md,postman,mongodb,gcp,postgres,prisma,vscode,idea,java,python,powershell,next,ts,react,jest,tailwind,qt,githubactions,rabbitmq,redis,ubuntu&perline=5)](https://skillicons.dev)
 
 ## <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Envelope%20with%20Arrow.png" alt="Envelope with Arrow" width="30" /> How to Connect with me
 
