@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-wireframe: var(--wireframe);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+:root {
+  --background: #000000;
+  --foreground: #ededed;
+  --accent: #FF4F00;
+  --wireframe: #333333;
+}
+
+@layer base {
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-geist-sans), sans-serif;
+  }
+}
+
+@layer utilities {
+  .bg-grid {
+    background-image: 
+      linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: 32px 32px;
+    background-position: center center;
+    background-attachment: fixed;
+  }
+  
+  .wireframe-border {
+    border: 1px solid var(--wireframe);
+  }
+  
+  .wireframe-border-b {
+    border-bottom: 1px solid var(--wireframe);
+  }
+
+  .wireframe-border-r {
+    border-right: 1px solid var(--wireframe);
+  }
+
+  .wireframe-border-l {
+    border-left: 1px solid var(--wireframe);
+  }
+
+  .wireframe-border-t {
+    border-top: 1px solid var(--wireframe);
+  }
+}
