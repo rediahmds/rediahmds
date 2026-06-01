@@ -1,0 +1,86 @@
+# **Redi Ahmad Supriyatna**
+
+Tangerang, Indonesia • [ahmadredi67@gmail.com](mailto:ahmadredi67@gmail.com) • [GitHub](https://github.com/rediahmds/) • [LinkedIn](https://www.linkedin.com/in/redi-ahmad-supriyatna-69a21b193/)
+
+## **Full Stack Engineer | Backend, Cloud & Mobile Development**
+
+Full Stack Engineer and Computer Systems graduate with hands-on experience building REST APIs, authentication systems, database-backed applications, cloud-deployed services, and Flutter mobile applications. Skilled in Go, Node.js, Python, PostgreSQL, Docker, AWS, GCP, and Flutter, with practical experience improving API performance, securing user access, and deploying containerized services. Strong backend foundation with the ability to collaborate across frontend, mobile, cloud, and IoT systems.
+
+## **Skills**
+
+* **Languages**: Node.js, Python, Dart, JavaScript, TypeScript, Arduino, Golang  
+* **Backend & Cloud**: Google Cloud Platform (GCP), AWS, PostgreSQL, Redis, RabbitMQ, RESTful APIs, Nginx, Docker, Gin  
+* **Mobile Development**: Flutter, Provider, Clean Architecture, Google Maps Integration.  
+* **DevOps & Tools**: Git (Version Control), GitHub Actions (CI/CD), TDD (Jest), Postman.
+
+## **Education**
+
+| Gunadarma University  | Tangerang, Indonesia |
+| :---- | ----: |
+| Bachelor Degree, Computer Systems. GPA: 3.91/4.00  | Sep 2021 \- Sep 2025 |
+| Relevant coursework: Programming & Algorithms, OOP, Computer Networking, Database Systems, Operating Systems |  |
+
+Thesis: Implementation of An Automatic Waste Separation System Based On Deep Learning Using ESP32
+
+## **Experience**
+
+|   Aruna Energie Semesta | Tangerang, Indonesia |
+| :---- | ----: |
+| Backend Engineer Intern | Dec 2025 – Present |
+
+* Built backend services for an internal IoT dashboard, utilizing MQTT for data syncing and WebSockets to instantly broadcast hardware alarms to the frontend (**Golang**, **Gin**, **GORM**).  
+* Developed secure authentication and authorization workflows using **JWT**, refresh tokens, role-based permissions, request validation, and resource-level access control.  
+* Improved API performance by migrating image uploads to an asynchronous **Amazon S3** workflow, reducing response time from approximately **7 seconds to 500 ms**.  
+* Optimized dashboard data loading by reducing database roundtrips by 80%, achieved by consolidating 5 sequential API queries into a single parallelized database request.  
+* Deployed containerized backend, frontend, MQTT, and InfluxDB services with **Docker Compose** on **AWS Lightsail**, using **Caddy** as a reverse proxy and **AWS Route 53** for DNS management.  
+* Engineered a reusable query builder library to support an InfluxDB v3-to-v2 migration, improving maintainability and consistency of Flux query generation.
+
+| Bangkit Academy led by Google, Goto, and Traveloka | [GitHub Repository](https://github.com/SkinSavvy-DevTeam/api-skinsavvy) | Remote |
+| :---- | ----: |
+| Backend Engineer (Capstone Project) | Feb – Jul 2024 |
+
+* Collaborated within a diverse, cross-functional team (Machine Learning & Mobile) to architect a scalable cloud application.  
+* Engineered a secure, type-safe **RESTful** API using **Hapi**.js and **TypeScript**, managing CRUD operations and handling seamless image uploads from Android clients to Google Cloud Storage.  
+* Designed and normalized a **PostgreSQL** database on **Google Cloud SQL** to ensure data integrity, then implemented **Prisma** as an ORM for efficient and secure data access.  
+* Automated the development lifecycle by establishing a CI/CD pipeline via **GitHub Actions**, streamlining testing and deployment across staging and production environments on Google Cloud Run.
+
+## **Projects**
+
+| EcoSort (Computer Vision and IoT \- Thesis) | [GitHub Repository](https://github.com/rediahmds/eco-sort-embedded) | Apr – Aug 2025 |
+| :---- | ----: |
+
+* Innovated a waste sorting system by fine-tuning a **ResNet50** model (**TorchVision**) for real-time waste classification (organic vs. recyclable), processing a live video stream captured and preprocessed with **OpenCV**.  
+* Programmed an event-driven mechanism on the **ESP32** that subscribes to cloud events, bridging the gap between software logic and physical hardware sorting.  
+* Implemented a fill-level monitoring system using two **ultrasonic** sensors to continuously measure bin capacity, displaying real-time status for both compartments on a 20x4 LCD.   
+* Used the **Blynk IoT** platform to build a remote dashboard, visualizing real-time bin levels (from ESP32) and AI classification results (from Python) in one interface.
+
+| Narrativa (Flutter Android) | [GitHub Repository](https://github.com/rediahmds/narrativa) | Apr – May 2025 |
+| :---- | ----: |
+
+* Architected the application using **Clean Architecture** and **go\_router** for declarative navigation, resulting in a maintainable routing structure aligned with industry standards.  
+* Developed a dynamic story feed with a detailed view by leveraging **dio** for API calls and implementing **infinite scrolling pagination** to efficiently manage and display large datasets.  
+* Integrated location-based features using **google\_maps\_flutter**, **geocoding**, and location to provide an **interactive map** for location selection and to display story coordinates with address details.  
+* Designed a secure authentication system with persistent login via **shared\_preferences**, managing user sessions and automatic redirection.
+
+| pH Value Monitoring (RESTful & IoT) | [GitHub Repository](https://github.com/rediahmds/ph-fastapi) | Jan – Jan 2025 |
+| :---- | ----: |
+
+* Engineered a real-time F\&B quality monitoring system for cow milk using **Python** (**FastAPI**) and PH sensor (**ESP32**).  
+* Designed a robust data persistence layer utilizing **SQLAlchemy** and **SQLite**, implementing normalized database models and **Pydantic** schemas to ensure strict data validation and type safety for sensor readings.  
+* Developed a real-time visualization dashboard using JavaScript and **ApexCharts**, implementing a 1-second polling mechanism to provide immediate visual feedback on milk safety status (Safe/Unsafe) to users.  
+* Implemented on-device edge computing logic on the **ESP32** to calculate pH values from voltage readings and perform initial safety classification before data transmission, reducing server-side processing load.
+
+
+| OpenMusic RESTful API | [GitHub Repository](https://github.com/rediahmds/open-music-api-dcd) | Jun – Sep 2023 |
+| :---- | ----: |
+
+* Engineered a plugin-based system with 5 core plugins (authentication, playlists, songs, albums, collaboration) to enhance modularity and implemented 4+ Joi validation schemas to ensure data accuracy across all API endpoints.  
+* Applied database normalization principles to a **PostgreSQL** schema to support a playlist collaboration feature, achieving high data integrity and optimized queries.  
+* Utilized **RabbitMQ** as a message broker to handle playlist exports asynchronously, resulting in decoupled services and a more optimized, responsive server.  
+* Implemented a **Redis** caching layer for 4 high-traffic endpoints, significantly reducing read load on the primary database.
+
+## **Certificates & Courses**
+
+* [Become an Intermediate Flutter App Developer](https://www.dicoding.com/certificates/KEXL29O30ZG2) (May 2025\)  
+* [AWS Certified Cloud Practitioner](https://cp.certmetrics.com/amazon/en/public/verify/credential/fe1205e44e504591a92977f79512a70d) (Jan 2025\)  
+* [Become an Expert Node.js Back-End Developer](https://www.dicoding.com/certificates/JMZV1KRYJXN9) (Nov 2023\)
