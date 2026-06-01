@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'glass_card.dart';
 
 class ContactForm extends StatefulWidget {
   const ContactForm({super.key});
@@ -69,13 +70,12 @@ class _ContactFormState extends State<ContactForm> {
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              TextFormField(
+      child: GlassCard(
+        padding: const EdgeInsets.all(32.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            TextFormField(
                 controller: _nameController,
                 decoration: const InputDecoration(
                   labelText: 'Name',
@@ -140,7 +140,6 @@ class _ContactFormState extends State<ContactForm> {
             ],
           ),
         ),
-      ),
     );
   }
 }

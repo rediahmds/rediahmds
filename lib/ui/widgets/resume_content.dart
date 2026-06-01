@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/resume_model.dart';
+import '../../providers/scroll_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'glass_card.dart';
 
-class ResumeContent extends StatelessWidget {
+class ResumeContent extends ConsumerWidget {
   final ResumeModel resumeData;
 
   const ResumeContent({super.key, required this.resumeData});
@@ -16,26 +18,68 @@ class ResumeContent extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final keys = ref.watch(sectionKeysProvider);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildHeader(context),
+        Container(key: keys['Home'], child: _buildHeader(context)),
         const SizedBox(height: 48),
-        _buildSectionTitle(context, 'Education', Icons.school_outlined),
-        _buildEducationSection(context),
+        Container(
+          key: keys['Education'],
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildSectionTitle(context, 'Education', Icons.school_outlined),
+              _buildEducationSection(context),
+            ],
+          ),
+        ),
         const SizedBox(height: 48),
-        _buildSectionTitle(context, 'Skills', Icons.code_outlined),
-        _buildSkillsSection(context),
+        Container(
+          key: keys['Skills'],
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildSectionTitle(context, 'Skills', Icons.code_outlined),
+              _buildSkillsSection(context),
+            ],
+          ),
+        ),
         const SizedBox(height: 48),
-        _buildSectionTitle(context, 'Experience', Icons.work_outline),
-        _buildExperienceSection(context),
+        Container(
+          key: keys['Experience'],
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildSectionTitle(context, 'Experience', Icons.work_outline),
+              _buildExperienceSection(context),
+            ],
+          ),
+        ),
         const SizedBox(height: 48),
-        _buildSectionTitle(context, 'Projects', Icons.rocket_launch_outlined),
-        _buildProjectsSection(context),
+        Container(
+          key: keys['Projects'],
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildSectionTitle(context, 'Projects', Icons.rocket_launch_outlined),
+              _buildProjectsSection(context),
+            ],
+          ),
+        ),
         const SizedBox(height: 48),
-        _buildSectionTitle(context, 'Certificates', Icons.workspace_premium_outlined),
-        _buildCertificatesSection(context),
+        Container(
+          key: keys['Certificates'],
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildSectionTitle(context, 'Certificates', Icons.workspace_premium_outlined),
+              _buildCertificatesSection(context),
+            ],
+          ),
+        ),
       ],
     );
   }
@@ -63,9 +107,9 @@ class ResumeContent extends StatelessWidget {
                   children: [
                     Text(
                       resumeData.personal.name,
-                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                      style: Theme.of(context).textTheme.headlineLarge?.copyWith(
                         fontWeight: FontWeight.w900,
-                        letterSpacing: -1,
+                        letterSpacing: -0.5,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -75,7 +119,7 @@ class ResumeContent extends StatelessWidget {
                       ).createShader(bounds),
                       child: Text(
                         resumeData.personal.title,
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
@@ -89,7 +133,7 @@ class ResumeContent extends StatelessWidget {
           const SizedBox(height: 32),
           Text(
             resumeData.personal.bio,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               height: 1.6,
             ),
           ),
@@ -100,7 +144,7 @@ class ResumeContent extends StatelessWidget {
             children: [
               FilledButton.icon(
                 onPressed: () => _launchUrl(resumeData.personal.github),
-                icon: const Icon(Icons.code),
+                icon: Image.asset('assets/icons/github.png', width: 20, height: 20, color: Theme.of(context).colorScheme.onPrimary),
                 label: const Text('GitHub'),
                 style: FilledButton.styleFrom(
                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
@@ -109,7 +153,7 @@ class ResumeContent extends StatelessWidget {
               ),
               FilledButton.tonalIcon(
                 onPressed: () => _launchUrl(resumeData.personal.linkedin),
-                icon: const Icon(Icons.link),
+                icon: Image.asset('assets/icons/linkedin.png', width: 20, height: 20),
                 label: const Text('LinkedIn'),
                 style: FilledButton.styleFrom(
                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
@@ -140,7 +184,7 @@ class ResumeContent extends StatelessWidget {
           const SizedBox(width: 12),
           Text(
             title,
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -174,13 +218,14 @@ class ResumeContent extends StatelessWidget {
                     children: [
                       Text(
                         edu.institution,
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         '${edu.degree} • ${edu.location}',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(context).colorScheme.secondary,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -289,7 +334,7 @@ class ResumeContent extends StatelessWidget {
                               Expanded(
                                 child: Text(
                                   exp.role,
-                                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -312,8 +357,9 @@ class ResumeContent extends StatelessWidget {
                           const SizedBox(height: 4),
                           Text(
                             '${exp.company} • ${exp.location}',
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               color: Theme.of(context).colorScheme.secondary,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                         ],
@@ -335,7 +381,7 @@ class ResumeContent extends StatelessWidget {
                       Expanded(
                         child: Text(
                           bullet,
-                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(height: 1.5),
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(height: 1.5),
                         ),
                       ),
                     ],
@@ -352,63 +398,56 @@ class ResumeContent extends StatelessWidget {
   Widget _buildProjectsSection(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        int crossAxisCount = constraints.maxWidth > 800 ? 2 : 1;
-        return GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: crossAxisCount,
-            mainAxisSpacing: 16,
-            crossAxisSpacing: 16,
-            mainAxisExtent: 380,
-          ),
-          itemCount: resumeData.projects.length,
-          itemBuilder: (context, index) {
-            final project = resumeData.projects[index];
-            return GlassCard(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Icon(Icons.folder_outlined, size: 32, color: Theme.of(context).colorScheme.primary),
-                      IconButton.filledTonal(
-                        onPressed: () => _launchUrl(project.github),
-                        icon: const Icon(Icons.open_in_new, size: 20),
-                        tooltip: 'View Source',
+        return Wrap(
+          spacing: 16,
+          runSpacing: 16,
+          children: resumeData.projects.map((project) {
+            final isDesktop = constraints.maxWidth > 800;
+            final width = isDesktop ? (constraints.maxWidth / 2) - 8 : constraints.maxWidth;
+            
+            return SizedBox(
+              width: width,
+              child: GlassCard(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Icon(Icons.folder_outlined, size: 32, color: Theme.of(context).colorScheme.primary),
+                        IconButton.filledTonal(
+                          onPressed: () => _launchUrl(project.github),
+                          icon: Image.asset('assets/icons/github.png', width: 18, height: 18),
+                          tooltip: 'View Source',
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      project.name,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    project.name,
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
                     ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    project.period,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    const SizedBox(height: 4),
+                    Text(
+                      project.period,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  Expanded(
-                    child: ListView(
-                      physics: const BouncingScrollPhysics(),
+                    const SizedBox(height: 16),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: project.bullets.map((bullet) => Padding(
                         padding: const EdgeInsets.only(bottom: 8),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(top: 6),
-                              child: Icon(Icons.arrow_right, size: 16, color: Theme.of(context).colorScheme.primary),
+                              padding: const EdgeInsets.only(top: 4),
+                              child: Icon(Icons.arrow_right, size: 20, color: Theme.of(context).colorScheme.primary),
                             ),
                             const SizedBox(width: 8),
                             Expanded(child: Text(bullet, style: Theme.of(context).textTheme.bodyMedium)),
@@ -416,11 +455,11 @@ class ResumeContent extends StatelessWidget {
                         ),
                       )).toList(),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             );
-          },
+          }).toList(),
         );
       }
     );

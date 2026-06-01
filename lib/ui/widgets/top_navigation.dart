@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/theme_provider.dart';
+import '../../providers/scroll_provider.dart';
 
 class TopNavigation extends ConsumerWidget {
   const TopNavigation({super.key});
@@ -9,20 +10,52 @@ class TopNavigation extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeState = ref.watch(themeProvider);
     final themeNotifier = ref.read(themeProvider.notifier);
+    final keys = ref.watch(sectionKeysProvider);
+
+    void scrollTo(String keyName) {
+      final key = keys[keyName];
+      if (key?.currentContext != null) {
+        Scrollable.ensureVisible(
+          key!.currentContext!,
+          duration: const Duration(milliseconds: 600),
+          curve: Curves.easeInOut,
+        );
+      }
+    }
+
+    final isDesktop = MediaQuery.of(context).size.width > 800;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text(
+          Text(
             'RA.',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.w900,
               letterSpacing: 2.0,
+              color: Theme.of(context).colorScheme.primary,
             ),
           ),
+          if (isDesktop)
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(onPressed: () => scrollTo('Home'), child: const Text('Home')),
+                  const SizedBox(width: 8),
+                  TextButton(onPressed: () => scrollTo('Education'), child: const Text('Education')),
+                  const SizedBox(width: 8),
+                  TextButton(onPressed: () => scrollTo('Skills'), child: const Text('Skills')),
+                  const SizedBox(width: 8),
+                  TextButton(onPressed: () => scrollTo('Experience'), child: const Text('Experience')),
+                  const SizedBox(width: 8),
+                  TextButton(onPressed: () => scrollTo('Projects'), child: const Text('Projects')),
+                ],
+              ),
+            ),
           Row(
             children: [
               SegmentedButton<bool>(
@@ -30,12 +63,12 @@ class TopNavigation extends ConsumerWidget {
                   ButtonSegment<bool>(
                     value: false,
                     icon: Icon(Icons.web),
-                    label: Text('UI Mode'),
+                    label: Text('UI'),
                   ),
                   ButtonSegment<bool>(
                     value: true,
                     icon: Icon(Icons.terminal),
-                    label: Text('Terminal'),
+                    label: Text('CLI'),
                   ),
                 ],
                 selected: {themeState.isTerminalMode},

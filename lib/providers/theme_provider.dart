@@ -39,17 +39,21 @@ class ThemeNotifier extends StateNotifier<ThemeState> {
 
   Future<void> _initTheme() async {
     try {
-      final response = await http.get(Uri.parse('https://bing.biturl.top/?resolution=1920&format=json&index=0&mkt=en-US'));
+      final response = await http.get(
+        Uri.parse(
+          'https://bing.biturl.top/?resolution=1920&format=json&index=0',
+        ),
+      );
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final String imageUrl = data['url'];
-        
+
         final palette = await PaletteGenerator.fromImageProvider(
           NetworkImage(imageUrl),
         );
-        
+
         final dominantColor = palette.dominantColor?.color ?? Colors.blueAccent;
-        
+
         state = state.copyWith(
           seedColor: dominantColor,
           backgroundUrl: imageUrl,

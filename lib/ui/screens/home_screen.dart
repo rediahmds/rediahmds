@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/resume_provider.dart';
 import '../../providers/theme_provider.dart';
+import '../../providers/scroll_provider.dart';
 import '../widgets/background_view.dart';
 import '../widgets/top_navigation.dart';
 import '../widgets/resume_content.dart';
@@ -16,6 +17,7 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final resumeAsyncValue = ref.watch(resumeDataProvider);
     final themeState = ref.watch(themeProvider);
+    final keys = ref.watch(sectionKeysProvider);
 
     return Scaffold(
       body: Stack(
@@ -24,39 +26,65 @@ class HomeScreen extends ConsumerWidget {
           SafeArea(
             child: Column(
               children: [
-                const TopNavigation(),
+                Center(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 1000),
+                    child: const TopNavigation(),
+                  ),
+                ),
                 Expanded(
                   child: resumeAsyncValue.when(
                     data: (resumeData) {
                       return SingleChildScrollView(
                         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            if (themeState.isTerminalMode)
-                              TerminalContent(resumeData: resumeData)
-                            else
-                              ResumeContent(resumeData: resumeData),
-                            const SizedBox(height: 48),
-                            const Divider(),
-                            const SizedBox(height: 24),
-                            const Text(
-                              'API Explorer',
-                              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                        child: Center(
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 1000),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                if (themeState.isTerminalMode)
+                                  TerminalContent(resumeData: resumeData)
+                                else
+                                  ResumeContent(resumeData: resumeData),
+                                const SizedBox(height: 48),
+                                const Divider(),
+                                const SizedBox(height: 24),
+                                Container(
+                                  key: keys['API'],
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    children: [
+                                      const Text(
+                                        'API Explorer',
+                                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                                      ),
+                                      const SizedBox(height: 16),
+                                      ApiExplorer(resumeData: resumeData),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 48),
+                                const Divider(),
+                                const SizedBox(height: 24),
+                                Container(
+                                  key: keys['Contact'],
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    children: [
+                                      const Text(
+                                        'Contact Me',
+                                        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                                      ),
+                                      const SizedBox(height: 16),
+                                      const ContactForm(),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 48),
+                              ],
                             ),
-                            const SizedBox(height: 16),
-                            ApiExplorer(resumeData: resumeData),
-                            const SizedBox(height: 48),
-                            const Divider(),
-                            const SizedBox(height: 24),
-                            const Text(
-                              'Contact Me',
-                              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                            ),
-                            const SizedBox(height: 16),
-                            const ContactForm(),
-                            const SizedBox(height: 48),
-                          ],
+                          ),
                         ),
                       );
                     },

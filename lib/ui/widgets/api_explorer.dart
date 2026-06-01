@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../../models/resume_model.dart';
+import 'glass_card.dart';
 
 class ApiExplorer extends StatefulWidget {
   final ResumeModel resumeData;
@@ -53,86 +54,82 @@ class _ApiExplorerState extends State<ApiExplorer> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: const Text(
-                    'GET',
-                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                  ),
+    return GlassCard(
+      padding: const EdgeInsets.all(24.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  borderRadius: BorderRadius.circular(4),
                 ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: DropdownButtonHideUnderline(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Theme.of(context).dividerColor),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: DropdownButton<String>(
-                        value: _selectedEndpoint,
-                        isExpanded: true,
-                        items: _endpoints.keys.map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue) {
-                          if (newValue != null) {
-                            setState(() {
-                              _selectedEndpoint = newValue;
-                            });
-                          }
-                        },
-                      ),
-                    ),
-                  ),
+                child: Text(
+                  'GET',
+                  style: TextStyle(color: Theme.of(context).colorScheme.onPrimary, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(width: 16),
-                ElevatedButton(
-                  onPressed: _isLoading ? null : _invokeEndpoint,
-                  child: const Text('Send'),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            const Text('Response:', style: TextStyle(fontWeight: FontWeight.bold)),
-            const SizedBox(height: 8),
-            Container(
-              height: 300,
-              decoration: BoxDecoration(
-                color: Theme.of(context).brightness == Brightness.dark
-                    ? Colors.black54
-                    : Colors.grey[200],
-                borderRadius: BorderRadius.circular(8),
               ),
-              padding: const EdgeInsets.all(16),
-              child: _isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : SingleChildScrollView(
-                      child: SelectableText(
-                        _responseBody,
-                        style: const TextStyle(fontFamily: 'monospace'),
-                      ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: DropdownButtonHideUnderline(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Theme.of(context).dividerColor),
+                      borderRadius: BorderRadius.circular(4),
                     ),
+                    child: DropdownButton<String>(
+                      value: _selectedEndpoint,
+                      isExpanded: true,
+                      items: _endpoints.keys.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        if (newValue != null) {
+                          setState(() {
+                            _selectedEndpoint = newValue;
+                          });
+                        }
+                      },
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 16),
+              ElevatedButton(
+                onPressed: _isLoading ? null : _invokeEndpoint,
+                child: const Text('Send'),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          const Text('Response:', style: TextStyle(fontWeight: FontWeight.bold)),
+          const SizedBox(height: 8),
+          Container(
+            height: 300,
+            decoration: BoxDecoration(
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.black54
+                  : Colors.grey[200],
+              borderRadius: BorderRadius.circular(8),
             ),
-          ],
-        ),
+            padding: const EdgeInsets.all(16),
+            child: _isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : SingleChildScrollView(
+                    child: SelectableText(
+                      _responseBody,
+                      style: const TextStyle(fontFamily: 'monospace'),
+                    ),
+                  ),
+          ),
+        ],
       ),
     );
   }
