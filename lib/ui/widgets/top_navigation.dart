@@ -71,7 +71,7 @@ class TopNavigation extends ConsumerWidget {
                     label: Text('CLI'),
                   ),
                 ],
-                selected: {themeState.isTerminalMode},
+                selected: <bool>{themeState.isTerminalMode},
                 onSelectionChanged: (Set<bool> newSelection) {
                   if (newSelection.first != themeState.isTerminalMode) {
                     themeNotifier.toggleTerminalMode();

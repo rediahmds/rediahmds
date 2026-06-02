@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/resume_model.dart';
 import '../../providers/scroll_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'glass_card.dart';
 
 class ResumeContent extends ConsumerWidget {
@@ -144,7 +145,7 @@ class ResumeContent extends ConsumerWidget {
             children: [
               FilledButton.icon(
                 onPressed: () => _launchUrl(resumeData.personal.github),
-                icon: Image.asset('assets/icons/github.png', width: 20, height: 20, color: Theme.of(context).colorScheme.onPrimary),
+                icon: SvgPicture.asset('assets/icons/github.svg', width: 20, height: 20, colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.onPrimary, BlendMode.srcIn)),
                 label: const Text('GitHub'),
                 style: FilledButton.styleFrom(
                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
@@ -153,7 +154,7 @@ class ResumeContent extends ConsumerWidget {
               ),
               FilledButton.tonalIcon(
                 onPressed: () => _launchUrl(resumeData.personal.linkedin),
-                icon: Image.asset('assets/icons/linkedin.png', width: 20, height: 20),
+                icon: SvgPicture.asset('assets/icons/linkedin.svg', width: 20, height: 20, colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.onSecondaryContainer, BlendMode.srcIn)),
                 label: const Text('LinkedIn'),
                 style: FilledButton.styleFrom(
                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
@@ -418,7 +419,7 @@ class ResumeContent extends ConsumerWidget {
                         Icon(Icons.folder_outlined, size: 32, color: Theme.of(context).colorScheme.primary),
                         IconButton.filledTonal(
                           onPressed: () => _launchUrl(project.github),
-                          icon: Image.asset('assets/icons/github.png', width: 18, height: 18),
+                          icon: SvgPicture.asset('assets/icons/github.svg', width: 18, height: 18, colorFilter: ColorFilter.mode(Theme.of(context).colorScheme.onSecondaryContainer, BlendMode.srcIn)),
                           tooltip: 'View Source',
                         ),
                       ],

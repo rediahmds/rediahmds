@@ -40,7 +40,7 @@ class _ContactFormState extends State<ContactForm> {
           context: context,
           builder: (context) => AlertDialog(
             title: const Text('Success'),
-            content: Text('Simulated API POST payload:\n\n${const JsonEncoder.withIndent('  ').convert(payload)}'),
+            content: Text('Simulated API POST payload:\n\n${const JsonEncoder.withIndent("  ").convert(payload)}'),
             actions: [
               TextButton(
                 onPressed: () {
