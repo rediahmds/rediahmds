@@ -93,14 +93,30 @@ class ResumeContent extends ConsumerWidget {
         children: [
           Row(
             children: [
-              ColorFiltered(
-                colorFilter: ColorFilter.mode(
-                  colorScheme.primary.withValues(alpha: 0.35),
-                  BlendMode.srcATop,
+              Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: colorScheme.primary.withValues(alpha: 0.3), width: 2),
+                  boxShadow: [
+                    BoxShadow(
+                      color: colorScheme.primary.withValues(alpha: 0.15),
+                      blurRadius: 20,
+                      spreadRadius: 2,
+                    ),
+                  ],
                 ),
-                child: const CircleAvatar(
-                  radius: 40,
-                  backgroundImage: AssetImage('assets/me.png'),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(18),
+                  child: Opacity(
+                    opacity: 0.9,
+                    child: Image.asset(
+                      'assets/me.png',
+                      fit: BoxFit.cover,
+                      filterQuality: FilterQuality.high,
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(width: 24),

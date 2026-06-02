@@ -65,30 +65,23 @@ class TopNavigation extends ConsumerWidget {
                 color: themeState.isTerminalMode ? Theme.of(context).colorScheme.primary : null,
               ),
               const SizedBox(width: 16),
-              DropdownButtonHideUnderline(
-                child: DropdownButton<ThemeMode>(
-                  value: themeState.themeMode,
-                  icon: const Icon(Icons.palette_outlined),
-                  onChanged: (ThemeMode? newValue) {
-                    if (newValue != null) {
-                      themeNotifier.toggleThemeMode(newValue);
-                    }
-                  },
-                  items: const [
-                    DropdownMenuItem(
-                      value: ThemeMode.system,
-                      child: Text('System'),
-                    ),
-                    DropdownMenuItem(
-                      value: ThemeMode.light,
-                      child: Text('Light'),
-                    ),
-                    DropdownMenuItem(
-                      value: ThemeMode.dark,
-                      child: Text('Dark'),
-                    ),
-                  ],
+              IconButton(
+                onPressed: () {
+                  final nextMode = themeState.themeMode == ThemeMode.system
+                      ? ThemeMode.light
+                      : themeState.themeMode == ThemeMode.light
+                          ? ThemeMode.dark
+                          : ThemeMode.system;
+                  themeNotifier.toggleThemeMode(nextMode);
+                },
+                icon: Icon(
+                  themeState.themeMode == ThemeMode.system
+                      ? Icons.brightness_auto
+                      : themeState.themeMode == ThemeMode.light
+                          ? Icons.light_mode
+                          : Icons.dark_mode,
                 ),
+                tooltip: 'Toggle Theme',
               ),
             ],
           ),
