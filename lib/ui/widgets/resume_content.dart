@@ -93,13 +93,15 @@ class ResumeContent extends ConsumerWidget {
         children: [
           Row(
             children: [
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: colorScheme.primaryContainer,
-                  shape: BoxShape.circle,
+              ColorFiltered(
+                colorFilter: ColorFilter.mode(
+                  colorScheme.primary.withValues(alpha: 0.35),
+                  BlendMode.srcATop,
                 ),
-                child: Icon(Icons.person, size: 48, color: colorScheme.onPrimaryContainer),
+                child: const CircleAvatar(
+                  radius: 40,
+                  backgroundImage: AssetImage('assets/me.png'),
+                ),
               ),
               const SizedBox(width: 24),
               Expanded(

@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/theme_provider.dart';
@@ -8,34 +7,40 @@ class BackgroundView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final themeState = ref.watch(themeProvider);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    // Watch to trigger rebuilds if theme changes
+    ref.watch(themeProvider);
 
     return Container(
-      width: double.infinity,
-      height: double.infinity,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
       ),
-      child: themeState.backgroundUrl.isNotEmpty
-          ? Stack(
-              fit: StackFit.expand,
-              children: [
-                Image.network(
-                  themeState.backgroundUrl,
-                  fit: BoxFit.cover,
-                ),
-                BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 30.0, sigmaY: 30.0),
-                  child: Container(
-                    color: isDark 
-                        ? Colors.black.withValues(alpha: 0.7) 
-                        : Colors.white.withValues(alpha: 0.7),
-                  ),
-                ),
-              ],
-            )
-          : null,
+      child: CustomPaint(
+        painter: _GridPainter(Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.05)),
+        child: Container(),
+      ),
     );
   }
+}
+
+class _GridPainter extends CustomPainter {
+  final Color color;
+  _GridPainter(this.color);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = 1.0;
+
+    const double spacing = 40.0;
+    for (double i = 0; i < size.width; i += spacing) {
+      canvas.drawLine(Offset(i, 0), Offset(i, size.height), paint);
+    }
+    for (double i = 0; i < size.height; i += spacing) {
+      canvas.drawLine(Offset(0, i), Offset(size.width, i), paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

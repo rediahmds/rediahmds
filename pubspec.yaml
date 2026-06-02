@@ -34,7 +34,6 @@ dependencies:
   cupertino_icons: ^1.0.8
   flutter_riverpod: ^2.6.1
   http: ^1.2.1
-  palette_generator: ^0.3.3+4
   google_fonts: ^6.2.1
   url_launcher: ^6.3.1
   flutter_svg: ^2.0.10
@@ -65,6 +64,7 @@ flutter:
   assets:
     - assets/data/
     - assets/icons/
+    - assets/me.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

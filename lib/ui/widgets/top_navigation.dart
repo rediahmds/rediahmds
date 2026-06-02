@@ -58,25 +58,11 @@ class TopNavigation extends ConsumerWidget {
             ),
           Row(
             children: [
-              SegmentedButton<bool>(
-                segments: const [
-                  ButtonSegment<bool>(
-                    value: false,
-                    icon: Icon(Icons.web),
-                    label: Text('UI'),
-                  ),
-                  ButtonSegment<bool>(
-                    value: true,
-                    icon: Icon(Icons.terminal),
-                    label: Text('CLI'),
-                  ),
-                ],
-                selected: <bool>{themeState.isTerminalMode},
-                onSelectionChanged: (Set<bool> newSelection) {
-                  if (newSelection.first != themeState.isTerminalMode) {
-                    themeNotifier.toggleTerminalMode();
-                  }
-                },
+              IconButton(
+                onPressed: () => themeNotifier.toggleTerminalMode(),
+                icon: Icon(themeState.isTerminalMode ? Icons.web : Icons.terminal),
+                tooltip: 'Switch to ${themeState.isTerminalMode ? "UI" : "Terminal"} Mode',
+                color: themeState.isTerminalMode ? Theme.of(context).colorScheme.primary : null,
               ),
               const SizedBox(width: 16),
               DropdownButtonHideUnderline(
