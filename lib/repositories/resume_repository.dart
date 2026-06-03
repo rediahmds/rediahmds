@@ -10,7 +10,7 @@ class MockResumeRepository implements ResumeRepository {
   @override
   Future<ResumeModel> fetchResumeData() async {
     // Simulate network latency
-    await Future.delayed(const Duration(milliseconds: 1500));
+    // await Future.delayed(const Duration(milliseconds: 1500));
     
     try {
       final String jsonString = await rootBundle.loadString('assets/data/resume.json');

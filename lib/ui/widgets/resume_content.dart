@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:ui' as ui;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/resume_model.dart';
 import '../../providers/scroll_provider.dart';
@@ -109,12 +110,15 @@ class ResumeContent extends ConsumerWidget {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(18),
-                  child: Opacity(
-                    opacity: 0.9,
-                    child: Image.asset(
-                      'assets/me.png',
-                      fit: BoxFit.cover,
-                      filterQuality: FilterQuality.high,
+                  child: ImageFiltered(
+                    imageFilter: ui.ImageFilter.blur(sigmaX: 0.5, sigmaY: 0.5),
+                    child: Opacity(
+                      opacity: 0.9,
+                      child: Image.asset(
+                        'assets/me.png',
+                        fit: BoxFit.cover,
+                        filterQuality: FilterQuality.medium,
+                      ),
                     ),
                   ),
                 ),
