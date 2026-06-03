@@ -43,3 +43,6 @@ next-env.d.ts
 # FVM Version Cache
 .fvm/
 .dart_tool/
+
+# Log files
+*.log
