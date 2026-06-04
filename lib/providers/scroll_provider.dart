@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+/// Global keys for each content section, used for scroll-to-section navigation.
 final sectionKeysProvider = Provider<Map<String, GlobalKey>>((ref) {
   return {
     'Home': GlobalKey(),
@@ -13,3 +14,6 @@ final sectionKeysProvider = Provider<Map<String, GlobalKey>>((ref) {
     'Contact': GlobalKey(),
   };
 });
+
+/// Currently selected navigation index, synced between Rail and Bar.
+final selectedNavIndexProvider = StateProvider<int>((ref) => 0);

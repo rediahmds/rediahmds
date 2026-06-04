@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'providers/theme_provider.dart';
+import 'ui/theme/app_theme.dart';
 import 'ui/screens/home_screen.dart';
 
 void main() {
@@ -16,30 +16,17 @@ class PortfolioApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final themeState = ref.watch(themeProvider);
 
-    final baseTextTheme = GoogleFonts.interTextTheme();
-
     return MaterialApp(
-      title: 'Redi Ahmad Supriyatna - Portfolio',
+      title: 'Redi Ahmad Supriyatna — Portfolio',
       debugShowCheckedModeBanner: false,
       themeMode: themeState.themeMode,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: themeState.seedColor,
-          brightness: Brightness.light,
-        ),
-        textTheme: baseTextTheme,
+      theme: AppTheme.buildTheme(
+        seedColor: themeState.seedColor,
+        brightness: Brightness.light,
       ),
-      darkTheme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: themeState.seedColor,
-          brightness: Brightness.dark,
-        ),
-        textTheme: baseTextTheme.apply(
-          bodyColor: Colors.white,
-          displayColor: Colors.white,
-        ),
+      darkTheme: AppTheme.buildTheme(
+        seedColor: themeState.seedColor,
+        brightness: Brightness.dark,
       ),
       home: const HomeScreen(),
     );

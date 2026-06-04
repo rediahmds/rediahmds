@@ -4,36 +4,41 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class ThemeState {
   final ThemeMode themeMode;
   final Color seedColor;
-  final bool isTerminalMode;
 
-  ThemeState({
-    this.themeMode = ThemeMode.dark, // Default to dark for backend aesthetic
-    this.seedColor = const Color(0xFF00FFCC), // Cyber/Backend Cyan
-    this.isTerminalMode = false,
+  const ThemeState({
+    this.themeMode = ThemeMode.dark,
+    this.seedColor = const Color(0xFF00FFCC), // Vibrant cyan seed
   });
 
   ThemeState copyWith({
     ThemeMode? themeMode,
     Color? seedColor,
-    bool? isTerminalMode,
   }) {
     return ThemeState(
       themeMode: themeMode ?? this.themeMode,
       seedColor: seedColor ?? this.seedColor,
-      isTerminalMode: isTerminalMode ?? this.isTerminalMode,
     );
   }
 }
 
 class ThemeNotifier extends StateNotifier<ThemeState> {
-  ThemeNotifier() : super(ThemeState());
+  ThemeNotifier() : super(const ThemeState());
 
-  void toggleThemeMode(ThemeMode mode) {
+  void setThemeMode(ThemeMode mode) {
     state = state.copyWith(themeMode: mode);
   }
 
-  void toggleTerminalMode() {
-    state = state.copyWith(isTerminalMode: !state.isTerminalMode);
+  void cycleThemeMode() {
+    final next = switch (state.themeMode) {
+      ThemeMode.system => ThemeMode.light,
+      ThemeMode.light  => ThemeMode.dark,
+      ThemeMode.dark   => ThemeMode.system,
+    };
+    state = state.copyWith(themeMode: next);
+  }
+
+  void setSeedColor(Color color) {
+    state = state.copyWith(seedColor: color);
   }
 }
 
