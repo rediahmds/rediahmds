@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../common/section_header.dart';
+import '../common/scroll_reveal.dart';
+import '../common/hover_surface.dart' show ExpressiveShapes;
 
 class ContactSection extends StatefulWidget {
   const ContactSection({super.key});
@@ -46,19 +48,33 @@ class _ContactSectionState extends State<ContactSection> {
   }
 
   @override
-  void dispose() { _nameController.dispose(); _emailController.dispose(); _messageController.dispose(); super.dispose(); }
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _messageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SectionHeader(title: 'Contact Me', icon: Icons.mail_outline),
-        Card(
-          elevation: 1, color: cs.surfaceContainerLow,
-          child: Padding(
-            padding: const EdgeInsets.all(32),
+        ScrollReveal(
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [cs.surfaceContainerLow, cs.surfaceContainer],
+              ),
+              borderRadius: ExpressiveShapes.heroShape,
+              border: Border.all(color: cs.outlineVariant.withValues(alpha: 0.4)),
+            ),
+            padding: const EdgeInsets.all(36),
             child: Form(
               key: _formKey,
               child: Column(

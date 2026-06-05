@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:portofolio/models/resume_model.dart';
 import '../common/section_header.dart';
+import '../common/scroll_reveal.dart';
+import '../common/hover_surface.dart' show ExpressiveShapes;
 
 class ApiExplorerSection extends StatefulWidget {
   final ResumeModel resumeData;
@@ -50,10 +52,18 @@ class _ApiExplorerSectionState extends State<ApiExplorerSection> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SectionHeader(title: 'API Explorer', icon: Icons.api_outlined),
-        Card.filled(
-          color: cs.surfaceContainerLow,
-          child: Padding(
-            padding: const EdgeInsets.all(24),
+        ScrollReveal(
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [cs.surfaceContainerLow, cs.surfaceContainer],
+              ),
+              borderRadius: ExpressiveShapes.asymmetricB,
+              border: Border.all(color: cs.outlineVariant.withValues(alpha: 0.4)),
+            ),
+            padding: const EdgeInsets.all(28),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -64,7 +74,7 @@ class _ApiExplorerSectionState extends State<ApiExplorerSection> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                       decoration: BoxDecoration(
-                        color: cs.primaryContainer,
+                        gradient: LinearGradient(colors: [cs.primaryContainer, cs.primary.withValues(alpha: 0.3)]),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text('GET', style: tt.labelLarge?.copyWith(color: cs.onPrimaryContainer, fontWeight: FontWeight.w700)),
@@ -89,7 +99,12 @@ class _ApiExplorerSectionState extends State<ApiExplorerSection> {
                   height: 300,
                   decoration: BoxDecoration(
                     color: cs.surfaceContainerHighest,
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      topRight: Radius.circular(24),
+                      bottomLeft: Radius.circular(24),
+                      bottomRight: Radius.circular(8),
+                    ),
                   ),
                   padding: const EdgeInsets.all(16),
                   child: _isLoading
