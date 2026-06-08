@@ -3,6 +3,7 @@ import 'package:portofolio/models/resume_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../common/floating_shapes.dart';
+import '../common/terminal_hero.dart';
 
 /// Immersive hero section with:
 /// - Floating M3-colored abstract shapes behind content
@@ -129,17 +130,50 @@ class _HeroSectionState extends State<HeroSection>
             // --- Content ---
             Padding(
               padding: EdgeInsets.all(isDesktop ? 48 : 28),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _buildIdentity(context, cs, tt, isDesktop),
-                  SizedBox(height: isDesktop ? 32 : 24),
-                  _buildBio(context, cs, tt, isDesktop),
-                  const SizedBox(height: 32),
-                  _buildActions(context, cs),
-                ],
-              ),
+              child: isDesktop
+                  ? Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Flexible(
+                          flex: 1,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              _buildIdentity(context, cs, tt, isDesktop),
+                              const SizedBox(height: 24),
+                              Expanded(
+                                child: _buildBio(context, cs, tt, isDesktop),
+                              ),
+                              const SizedBox(height: 20),
+                              _buildActions(context, cs),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 32),
+                        SizedBox(
+                          width: 280,
+                          height: 340,
+                          child: TerminalHero(),
+                        ),
+                      ],
+                    )
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _buildIdentity(context, cs, tt, isDesktop),
+                        SizedBox(height: isDesktop ? 32 : 24),
+                        _buildBio(context, cs, tt, isDesktop),
+                        const SizedBox(height: 32),
+                        _buildActions(context, cs),
+                        const SizedBox(height: 24),
+                        SizedBox(
+                          height: 240,
+                          child: TerminalHero(),
+                        ),
+                      ],
+                    ),
             ),
 
             // --- Overlapping decorative element (top-right) ---
