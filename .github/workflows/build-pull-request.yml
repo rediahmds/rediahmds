@@ -1,0 +1,23 @@
+name: Build Flutter App
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repo
+        uses: actions/checkout@v6
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version-file: .fvmrc
+      - name: Verify Flutter installation
+        run: flutter --version
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Build WASM
+        run: flutter build web --release --wasm
