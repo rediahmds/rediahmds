@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:portofolio/models/resume_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../common/floating_shapes.dart';
 import '../common/terminal_hero.dart';
 
-/// Immersive hero section with:
-/// - Floating M3-colored abstract shapes behind content
-/// - Display-scale typography acting as a graphical element
-/// - Overlapping profile image that breaks the card boundary
-/// - Staggered entrance animations
+/// Bulletproof two-column Hero section.
+///
+/// Desktop: [IdentityColumn | TerminalColumn] via Row + Expanded/constrained.
+/// Mobile:  stacked Column — identity → metrics → terminal → actions.
+///
+/// Zero paragraphs: bio text is replaced by glanceable M3 metric micro-cards
+/// and a live terminal widget that immediately signals "backend developer".
 class HeroSection extends StatefulWidget {
   final PersonalModel personal;
-
   const HeroSection({super.key, required this.personal});
 
   @override
@@ -21,199 +21,148 @@ class HeroSection extends StatefulWidget {
 
 class _HeroSectionState extends State<HeroSection>
     with SingleTickerProviderStateMixin {
-  late final AnimationController _entranceController;
-  late final Animation<double> _fadeIn;
-  late final Animation<Offset> _slideUp;
-  late final Animation<double> _scaleIn;
+  late final AnimationController _ctrl;
+  late final Animation<double> _fade;
+  late final Animation<Offset> _slide;
 
   @override
   void initState() {
     super.initState();
-    _entranceController = AnimationController(
+    _ctrl = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1000),
+      duration: const Duration(milliseconds: 900),
     );
-
-    _fadeIn = CurvedAnimation(
-      parent: _entranceController,
-      curve: const Interval(0.0, 0.6, curve: Curves.easeOut),
-    );
-
-    _slideUp = Tween<Offset>(
-      begin: const Offset(0, 50),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _entranceController,
-      curve: const Interval(0.1, 0.8, curve: Curves.easeOutCubic),
-    ));
-
-    _scaleIn = Tween<double>(begin: 0.92, end: 1.0).animate(CurvedAnimation(
-      parent: _entranceController,
-      curve: const Interval(0.0, 0.7, curve: Curves.easeOutCubic),
-    ));
-
-    // Start entrance animation
-    Future.delayed(const Duration(milliseconds: 200), () {
-      if (mounted) _entranceController.forward();
+    _fade = CurvedAnimation(parent: _ctrl,
+        curve: const Interval(0.0, 0.65, curve: Curves.easeOut));
+    _slide = Tween<Offset>(begin: const Offset(0, 32), end: Offset.zero)
+        .animate(CurvedAnimation(parent: _ctrl,
+            curve: const Interval(0.05, 0.8, curve: Curves.easeOutCubic)));
+    Future.delayed(const Duration(milliseconds: 150), () {
+      if (mounted) _ctrl.forward();
     });
   }
 
   @override
   void dispose() {
-    _entranceController.dispose();
+    _ctrl.dispose();
     super.dispose();
   }
 
-  Future<void> _launchUrl(String urlString) async {
-    final url = Uri.parse(urlString);
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url);
-    }
+  Future<void> _launch(String url) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) await launchUrl(uri);
   }
 
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
-    final tt = Theme.of(context).textTheme;
     final isDesktop = MediaQuery.sizeOf(context).width > 800;
 
     return AnimatedBuilder(
-      animation: _entranceController,
-      builder: (context, child) {
-        return Opacity(
-          opacity: _fadeIn.value,
-          child: Transform.translate(
-            offset: _slideUp.value,
-            child: Transform.scale(
-              scale: _scaleIn.value,
-              child: child,
-            ),
+      animation: _ctrl,
+      builder: (context, child) => Opacity(
+        opacity: _fade.value,
+        child: Transform.translate(offset: _slide.value, child: child),
+      ),
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [cs.surfaceContainerLow, cs.surfaceContainer],
           ),
-        );
-      },
-      child: SizedBox(
-        height: isDesktop ? 520 : null,
-        child: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            // --- Floating background shapes ---
-            if (isDesktop)
-              const Positioned.fill(
-                child: FloatingShapes(),
-              ),
-
-            // --- Main hero card with expressive shape ---
-            Positioned.fill(
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      cs.surfaceContainerLow,
-                      cs.surfaceContainer,
-                    ],
-                  ),
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(48),
-                    topRight: Radius.circular(16),
-                    bottomLeft: Radius.circular(16),
-                    bottomRight: Radius.circular(48),
-                  ),
-                  border: Border.all(
-                    color: cs.outlineVariant.withValues(alpha: 0.5),
-                  ),
-                ),
-              ),
-            ),
-
-            // --- Content ---
-            Padding(
-              padding: EdgeInsets.all(isDesktop ? 48 : 28),
-              child: isDesktop
-                  ? Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          flex: 1,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              _buildIdentity(context, cs, tt, isDesktop),
-                              const SizedBox(height: 24),
-                              Expanded(
-                                child: _buildBio(context, cs, tt, isDesktop),
-                              ),
-                              const SizedBox(height: 20),
-                              _buildActions(context, cs),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(width: 32),
-                        SizedBox(
-                          width: 280,
-                          height: 340,
-                          child: TerminalHero(),
-                        ),
-                      ],
-                    )
-                  : Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _buildIdentity(context, cs, tt, isDesktop),
-                        SizedBox(height: isDesktop ? 32 : 24),
-                        _buildBio(context, cs, tt, isDesktop),
-                        const SizedBox(height: 32),
-                        _buildActions(context, cs),
-                        const SizedBox(height: 24),
-                        SizedBox(
-                          height: 240,
-                          child: TerminalHero(),
-                        ),
-                      ],
-                    ),
-            ),
-
-            // --- Overlapping decorative element (top-right) ---
-            if (isDesktop)
-              Positioned(
-                top: -12,
-                right: -12,
-                child: Container(
-                  width: 80,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    color: cs.tertiaryContainer.withValues(alpha: 0.6),
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(32),
-                      topRight: Radius.circular(8),
-                      bottomLeft: Radius.circular(8),
-                      bottomRight: Radius.circular(32),
-                    ),
-                  ),
-                ),
-              ),
-          ],
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(48),
+            topRight: Radius.circular(16),
+            bottomLeft: Radius.circular(16),
+            bottomRight: Radius.circular(48),
+          ),
+          border: Border.all(color: cs.outlineVariant.withValues(alpha: 0.4)),
         ),
+        padding: EdgeInsets.all(isDesktop ? 40 : 24),
+        child: isDesktop
+            ? _buildDesktop(context, cs)
+            : _buildMobile(context, cs),
       ),
     );
   }
 
-  Widget _buildIdentity(
-    BuildContext context,
-    ColorScheme cs,
-    TextTheme tt,
-    bool isDesktop,
-  ) {
+  // ── Desktop: strict 50/50 Row layout ───────────────────────────────────────
+
+  Widget _buildDesktop(BuildContext context, ColorScheme cs) {
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Left column — exactly 50% of available width
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _ProfileRow(personal: widget.personal, isDesktop: true),
+                const SizedBox(height: 24),
+                _MetricRow(isDesktop: true),
+                const SizedBox(height: 28),
+                _ActionRow(personal: widget.personal, launch: _launch),
+              ],
+            ),
+          ),
+          const SizedBox(width: 32),
+          // Right column — fixed max-width terminal, never overflows
+          SizedBox(
+            width: 380,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(minHeight: 280, maxHeight: 360),
+              child: const TerminalHero(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ── Mobile: stacked layout ──────────────────────────────────────────────────
+
+  Widget _buildMobile(BuildContext context, ColorScheme cs) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        _ProfileRow(personal: widget.personal, isDesktop: false),
+        const SizedBox(height: 20),
+        _MetricRow(isDesktop: false),
+        const SizedBox(height: 20),
+        _ActionRow(personal: widget.personal, launch: _launch),
+        const SizedBox(height: 20),
+        SizedBox(height: 220, child: const TerminalHero()),
+      ],
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Profile row — avatar + name + title badge
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _ProfileRow extends StatelessWidget {
+  final PersonalModel personal;
+  final bool isDesktop;
+  const _ProfileRow({required this.personal, required this.isDesktop});
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    final tt = Theme.of(context).textTheme;
+    final avatarSize = isDesktop ? 100.0 : 72.0;
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        // Profile image with asymmetric border
+        // Avatar with asymmetric clip
         Container(
-          width: isDesktop ? 110 : 76,
-          height: isDesktop ? 110 : 76,
+          width: avatarSize,
+          height: avatarSize,
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(32),
@@ -224,9 +173,9 @@ class _HeroSectionState extends State<HeroSection>
             border: Border.all(color: cs.primaryContainer, width: 3),
             boxShadow: [
               BoxShadow(
-                color: cs.primary.withValues(alpha: 0.15),
-                blurRadius: 24,
-                offset: const Offset(0, 8),
+                color: cs.primary.withValues(alpha: 0.18),
+                blurRadius: 20,
+                offset: const Offset(0, 6),
               ),
             ],
           ),
@@ -237,40 +186,32 @@ class _HeroSectionState extends State<HeroSection>
               bottomLeft: Radius.circular(9),
               bottomRight: Radius.circular(29),
             ),
-            child: Image.asset(
-              'assets/me.png',
-              fit: BoxFit.cover,
-              filterQuality: FilterQuality.medium,
-            ),
+            child: Image.asset('assets/me.png',
+                fit: BoxFit.cover, filterQuality: FilterQuality.medium),
           ),
         ),
-        const SizedBox(width: 28),
+        const SizedBox(width: 20),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Immersive display text — acts as graphical element
               Text(
-                widget.personal.name,
-                style: (isDesktop ? tt.displayMedium : tt.headlineLarge)
-                    ?.copyWith(
+                personal.name,
+                style:
+                    (isDesktop ? tt.headlineLarge : tt.headlineMedium)?.copyWith(
                   height: 1.1,
-                  letterSpacing: -1.0,
+                  letterSpacing: -0.8,
+                  fontWeight: FontWeight.w800,
                 ),
               ),
-              const SizedBox(height: 12),
-              // Title badge with asymmetric shape
+              const SizedBox(height: 10),
+              // Gradient title badge
               Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 8,
-                ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [
-                      cs.tertiaryContainer,
-                      cs.secondaryContainer,
-                    ],
+                    colors: [cs.tertiaryContainer, cs.secondaryContainer],
                   ),
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20),
@@ -280,8 +221,8 @@ class _HeroSectionState extends State<HeroSection>
                   ),
                 ),
                 child: Text(
-                  widget.personal.title,
-                  style: tt.labelLarge?.copyWith(
+                  'Backend & Cloud · Mobile',
+                  style: tt.labelMedium?.copyWith(
                     color: cs.onTertiaryContainer,
                     fontWeight: FontWeight.w700,
                   ),
@@ -293,62 +234,192 @@ class _HeroSectionState extends State<HeroSection>
       ],
     );
   }
+}
 
-  Widget _buildBio(
-    BuildContext context,
-    ColorScheme cs,
-    TextTheme tt,
-    bool isDesktop,
-  ) {
-    return Container(
-      padding: const EdgeInsets.only(left: 16),
-      decoration: BoxDecoration(
-        border: Border(
-          left: BorderSide(
-            color: cs.primary.withValues(alpha: 0.4),
-            width: 3,
+// ─────────────────────────────────────────────────────────────────────────────
+// Metric micro-cards — replaces the bio paragraph entirely.
+// Each card is a glanceable data point.
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _MetricRow extends StatelessWidget {
+  final bool isDesktop;
+  const _MetricRow({required this.isDesktop});
+
+  static const _metrics = [
+    _MetricData(
+      icon: Icons.storage_rounded,
+      value: 'Backend',
+      label: 'Architecture',
+    ),
+    _MetricData(
+      icon: Icons.psychology_rounded,
+      value: 'CV / AI',
+      label: 'Edge Computing',
+    ),
+    _MetricData(
+      icon: Icons.smartphone_rounded,
+      value: 'Flutter',
+      label: 'Mobile Dev',
+    ),
+    _MetricData(
+      icon: Icons.cloud_done_rounded,
+      value: 'AWS · GCP',
+      label: 'Cloud Deploy',
+    ),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: 10,
+      runSpacing: 10,
+      children: _metrics
+          .asMap()
+          .entries
+          .map((e) => _MetricChip(data: e.value, index: e.key))
+          .toList(),
+    );
+  }
+}
+
+class _MetricData {
+  final IconData icon;
+  final String value;
+  final String label;
+  const _MetricData(
+      {required this.icon, required this.value, required this.label});
+}
+
+class _MetricChip extends StatefulWidget {
+  final _MetricData data;
+  final int index;
+  const _MetricChip({required this.data, required this.index});
+
+  @override
+  State<_MetricChip> createState() => _MetricChipState();
+}
+
+class _MetricChipState extends State<_MetricChip> {
+  bool _hovered = false;
+
+  // Cycles through M3 container color pairs by index
+  Color _bg(ColorScheme cs) => switch (widget.index % 4) {
+        0 => cs.primaryContainer,
+        1 => cs.secondaryContainer,
+        2 => cs.tertiaryContainer,
+        _ => cs.surfaceContainerHighest,
+      };
+
+  Color _fg(ColorScheme cs) => switch (widget.index % 4) {
+        0 => cs.onPrimaryContainer,
+        1 => cs.onSecondaryContainer,
+        2 => cs.onTertiaryContainer,
+        _ => cs.onSurface,
+      };
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    final tt = Theme.of(context).textTheme;
+
+    return MouseRegion(
+      onEnter: (_) => setState(() => _hovered = true),
+      onExit: (_) => setState(() => _hovered = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeOutCubic,
+        transform: Matrix4.diagonal3Values(
+          _hovered ? 1.04 : 1.0,
+          _hovered ? 1.04 : 1.0,
+          1.0,
+        ),
+        transformAlignment: Alignment.center,
+        padding:
+            const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        decoration: BoxDecoration(
+          color: _hovered
+              ? _bg(cs)
+              : _bg(cs).withValues(alpha: 0.6),
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(16),
+            topRight: Radius.circular(6),
+            bottomLeft: Radius.circular(6),
+            bottomRight: Radius.circular(16),
+          ),
+          border: Border.all(
+            color: _hovered
+                ? _fg(cs).withValues(alpha: 0.3)
+                : Colors.transparent,
           ),
         ),
-      ),
-      child: Text(
-        widget.personal.bio,
-        style: tt.bodyLarge?.copyWith(
-          height: 1.8,
-          color: cs.onSurfaceVariant,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(widget.data.icon, size: 18, color: _fg(cs)),
+            const SizedBox(width: 8),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.data.value,
+                  style: tt.labelLarge?.copyWith(
+                    fontWeight: FontWeight.w800,
+                    color: _fg(cs),
+                    height: 1.1,
+                  ),
+                ),
+                Text(
+                  widget.data.label,
+                  style: tt.labelSmall?.copyWith(
+                    color: _fg(cs).withValues(alpha: 0.7),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
   }
+}
 
-  Widget _buildActions(BuildContext context, ColorScheme cs) {
+// ─────────────────────────────────────────────────────────────────────────────
+// Action buttons row
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _ActionRow extends StatelessWidget {
+  final PersonalModel personal;
+  final Future<void> Function(String) launch;
+  const _ActionRow({required this.personal, required this.launch});
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Wrap(
-      spacing: 12,
-      runSpacing: 12,
+      spacing: 10,
+      runSpacing: 10,
       children: [
         FilledButton.icon(
-          onPressed: () => _launchUrl(widget.personal.github),
-          icon: SvgPicture.asset(
-            'assets/icons/github.svg',
-            width: 18, height: 18,
-            colorFilter: ColorFilter.mode(cs.onPrimary, BlendMode.srcIn),
-          ),
+          onPressed: () => launch(personal.github),
+          icon: SvgPicture.asset('assets/icons/github.svg',
+              width: 18,
+              height: 18,
+              colorFilter: ColorFilter.mode(cs.onPrimary, BlendMode.srcIn)),
           label: const Text('GitHub'),
         ),
         FilledButton.tonalIcon(
-          onPressed: () => _launchUrl(widget.personal.linkedin),
-          icon: SvgPicture.asset(
-            'assets/icons/linkedin.svg',
-            width: 18, height: 18,
-            colorFilter: ColorFilter.mode(
-              cs.onSecondaryContainer, BlendMode.srcIn,
-            ),
-          ),
+          onPressed: () => launch(personal.linkedin),
+          icon: SvgPicture.asset('assets/icons/linkedin.svg',
+              width: 18,
+              height: 18,
+              colorFilter: ColorFilter.mode(
+                  cs.onSecondaryContainer, BlendMode.srcIn)),
           label: const Text('LinkedIn'),
         ),
         OutlinedButton.icon(
-          onPressed: () => _launchUrl('mailto:${widget.personal.email}'),
-          icon: const Icon(Icons.email_outlined),
-          label: Text(widget.personal.email),
+          onPressed: () => launch('mailto:${personal.email}'),
+          icon: const Icon(Icons.email_outlined, size: 18),
+          label: const Text('Email Me'),
         ),
       ],
     );

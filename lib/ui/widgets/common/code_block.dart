@@ -193,10 +193,10 @@ class _CodeBlockState extends State<CodeBlock> {
         RegExp(r'//.*$|#.*$'),
         Colors.white.withValues(alpha: 0.35),
       ),
-      _SyntaxPattern(
-        RegExp(r'"[^"]*"|' r"'[^']*'|`[^`]*`"),
-        const Color(0xFFA6E3A1),
-      ),
+      // Double-quoted strings
+      _SyntaxPattern(RegExp(r'"[^"]*"'), const Color(0xFFA6E3A1)),
+      // Single-quoted and backtick strings
+      _SyntaxPattern(RegExp(r"'[^']*'|" r'`[^`]*`'), const Color(0xFFA6E3A1)),
       _SyntaxPattern(
         RegExp(
           r'\b(func|type|struct|return|if|else|for|range|import|package|from|def|async|await|class|const|var|let|final)\b',
