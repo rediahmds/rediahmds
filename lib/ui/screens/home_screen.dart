@@ -333,7 +333,10 @@ class _ScrollSpyBodyState extends ConsumerState<_ScrollSpyBody> {
               const SizedBox(height: 56),
               Container(
                 key: keys['Experience'],
-                child: ExperienceSection(experience: widget.resumeData.experience),
+                child: ExperienceSection(
+                  experience: widget.resumeData.experience,
+                  education: widget.resumeData.education,
+                ),
               ),
               const SizedBox(height: 56),
               Container(

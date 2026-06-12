@@ -135,7 +135,11 @@ class _HeroSectionState extends State<HeroSection>
         const SizedBox(height: 20),
         _ActionRow(personal: widget.personal, launch: _launch),
         const SizedBox(height: 20),
-        SizedBox(height: 220, child: const TerminalHero()),
+        const SizedBox(
+          height: 220,
+          width: double.infinity,
+          child: TerminalHero(),
+        ),
       ],
     );
   }
