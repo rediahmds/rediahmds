@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:portofolio/models/resume_model.dart';
@@ -36,7 +37,13 @@ class _ApiExplorerSectionState extends State<ApiExplorerSection> {
 
   Future<void> _invokeEndpoint() async {
     setState(() { _isLoading = true; _responseBody = ''; });
-    await Future.delayed(const Duration(milliseconds: 600));
+    
+    // Randomize delay value to mock network condition
+    const max = 999;
+    const min = 50;
+    final randomDelay = Random().nextInt(max - min + 1);
+
+    await Future.delayed(Duration(milliseconds: randomDelay));
     final jsonMap = widget.resumeData.toJson();
     final key = _endpoints[_selectedEndpoint]!;
     const encoder = JsonEncoder.withIndent('  ');
@@ -112,7 +119,7 @@ class _ApiExplorerSectionState extends State<ApiExplorerSection> {
                       : SingleChildScrollView(
                           child: SelectableText(
                             _responseBody,
-                            style: GoogleFonts.firaCode(color: cs.onSurface, fontSize: 13),
+                            style: GoogleFonts.jetBrainsMono(color: cs.onSurface, fontSize: 13),
                           ),
                         ),
                 ),

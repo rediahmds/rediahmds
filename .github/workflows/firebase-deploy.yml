@@ -10,11 +10,20 @@ jobs:
     steps:
       - name: Clone repo
         uses: actions/checkout@v6
+
       - name: Set up Flutter
+        id: flutter-action
         uses: subosito/flutter-action@v2
         with:
           channel: stable
           flutter-version-file: .fvmrc
+          cache: true
+          pub-cache: true
+
+      - name: Conditionally run melos bootstrap
+        if: steps.flutter-action.outputs.PUB-CACHE-HIT != 'true'
+        run: melos bootstrap
+
       - name: Verify Flutter installation
         run: flutter --version
       - name: Install dependencies
