@@ -122,7 +122,7 @@ class _TerminalHeroState extends State<TerminalHero> {
   // ── Title bar ──────────────────────────────────────────────────────────────
 
   Widget _buildTitleBar(bool isDark, ColorScheme cs) {
-    final style = GoogleFonts.firaCode(
+    final style = GoogleFonts.jetBrainsMono(
       fontSize: 11,
       color: Colors.white.withValues(alpha: 0.5),
     );
@@ -167,7 +167,7 @@ class _TerminalHeroState extends State<TerminalHero> {
   // ── Body ───────────────────────────────────────────────────────────────────
 
   Widget _buildBody(ColorScheme cs) {
-    final mono = GoogleFonts.firaCode(fontSize: 12.5, height: 1.65);
+    final mono = GoogleFonts.jetBrainsMono(fontSize: 12.5, height: 1.65);
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),

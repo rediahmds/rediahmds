@@ -97,7 +97,7 @@ class _CodeBlockState extends State<CodeBlock> {
                   ),
                   child: Text(
                     widget.language,
-                    style: GoogleFonts.firaCode(
+                    style: GoogleFonts.jetBrainsMono(
                       fontSize: 11,
                       fontWeight: FontWeight.w600,
                       color: _languageColor(widget.language),
@@ -108,7 +108,7 @@ class _CodeBlockState extends State<CodeBlock> {
                 // Filename
                 Text(
                   widget.filename,
-                  style: GoogleFonts.firaCode(
+                  style: GoogleFonts.jetBrainsMono(
                     fontSize: 11,
                     color: Colors.white.withValues(alpha: 0.5),
                   ),
@@ -154,7 +154,7 @@ class _CodeBlockState extends State<CodeBlock> {
 
   Widget _buildHighlightedCode(ColorScheme cs) {
     final lines = widget.code.split('\n');
-    final monoStyle = GoogleFonts.firaCode(fontSize: 13, height: 1.7);
+    final monoStyle = GoogleFonts.jetBrainsMono(fontSize: 13, height: 1.7);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
