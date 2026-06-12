@@ -2,10 +2,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-/// A playful M3-styled terminal widget with typing animation.
+/// M3-styled terminal widget with char-by-char typing animation.
 ///
-/// Simulates a backend developer's console with color-coded output
-/// and a blinking cursor. Uses M3 surface tokens and expressive shapes.
+/// **Overflow safety:** relies on its parent giving it a tight width
+/// constraint (e.g. `SizedBox(width: double.infinity, …)`). Internally
+/// each text line is wrapped in a `Text.rich` (not bare `RichText`) so
+/// the Flutter layout engine enforces the parent's max-width and wraps
+/// long lines instead of overflowing.
 class TerminalHero extends StatefulWidget {
   const TerminalHero({super.key});
 
@@ -14,67 +17,56 @@ class TerminalHero extends StatefulWidget {
 }
 
 class _TerminalHeroState extends State<TerminalHero> {
-  final List<_TerminalLine> _visibleLines = [];
-  int _currentLineIndex = 0;
-  int _currentCharIndex = 0;
-  Timer? _typingTimer;
-  bool _cursorVisible = true;
+  final List<_TLine> _visible = [];
+  int _lineIdx = 0;
+  int _charIdx = 0;
+  Timer? _typeTimer;
   Timer? _cursorTimer;
+  bool _cursorOn = true;
 
-  // Lines to type out — simulates a Go backend dev workflow
-  static const _lines = [
-    _TerminalLine('❯ ', 'go run ./cmd/server', _LineType.command),
-    _TerminalLine('  ', '🚀 Server starting on :8080', _LineType.success),
-    _TerminalLine('  ', '📦 Connected to PostgreSQL', _LineType.info),
-    _TerminalLine('  ', '🔌 MQTT broker linked', _LineType.info),
-    _TerminalLine('  ', '✅ All services healthy', _LineType.success),
-    _TerminalLine('❯ ', 'curl /api/v1/health | jq', _LineType.command),
-    _TerminalLine('  ', '{ "status": "ok", "uptime": "99.9%" }', _LineType.json),
+  // Short, intentionally concise lines — long strings risk overflow on
+  // phones narrower than 320 px even with wrapping enabled.
+  static const _script = [
+    _TLine('❯ ', 'go run ./cmd/server', _T.cmd),
+    _TLine('  ', '🚀 Server ready :8080', _T.ok),
+    _TLine('  ', '📦 PostgreSQL connected', _T.info),
+    _TLine('  ', '🔌 MQTT broker linked', _T.info),
+    _TLine('  ', '✅ All services healthy', _T.ok),
+    _TLine('❯ ', 'curl /api/v1/health', _T.cmd),
+    _TLine('  ', '{ "status": "ok" }', _T.json),
   ];
 
   @override
   void initState() {
     super.initState();
-    // Start cursor blink
-    _cursorTimer = Timer.periodic(const Duration(milliseconds: 530), (_) {
-      if (mounted) setState(() => _cursorVisible = !_cursorVisible);
-    });
-    // Start typing after a short delay
-    Future.delayed(const Duration(milliseconds: 800), _startTyping);
+    _cursorTimer = Timer.periodic(
+      const Duration(milliseconds: 530),
+      (_) { if (mounted) setState(() => _cursorOn = !_cursorOn); },
+    );
+    Future.delayed(const Duration(milliseconds: 700), _type);
   }
 
-  void _startTyping() {
-    if (!mounted || _currentLineIndex >= _lines.length) return;
+  void _type() {
+    if (!mounted || _lineIdx >= _script.length) return;
+    final line = _script[_lineIdx];
+    if (_charIdx == 0) setState(() => _visible.add(_TLine(line.p, '', line.t)));
 
-    // Add current line as empty (will fill char by char)
-    final line = _lines[_currentLineIndex];
-    if (_currentCharIndex == 0) {
-      _visibleLines.add(_TerminalLine(line.prompt, '', line.type));
-    }
-
-    _typingTimer = Timer.periodic(
-      Duration(milliseconds: line.type == _LineType.command ? 45 : 18),
-      (timer) {
-        if (!mounted) { timer.cancel(); return; }
-
-        final fullText = line.text;
-        if (_currentCharIndex < fullText.length) {
+    _typeTimer = Timer.periodic(
+      Duration(milliseconds: line.t == _T.cmd ? 48 : 20),
+      (t) {
+        if (!mounted) { t.cancel(); return; }
+        if (_charIdx < line.text.length) {
           setState(() {
-            _visibleLines.last = _TerminalLine(
-              line.prompt,
-              fullText.substring(0, _currentCharIndex + 1),
-              line.type,
-            );
-            _currentCharIndex++;
+            _visible.last = _TLine(line.p, line.text.substring(0, ++_charIdx), line.t);
           });
         } else {
-          timer.cancel();
-          _currentCharIndex = 0;
-          _currentLineIndex++;
-
-          // Pause between lines, then continue
-          final delay = line.type == _LineType.command ? 400 : 200;
-          Future.delayed(Duration(milliseconds: delay), _startTyping);
+          t.cancel();
+          _charIdx = 0;
+          _lineIdx++;
+          Future.delayed(
+            Duration(milliseconds: line.t == _T.cmd ? 380 : 180),
+            _type,
+          );
         }
       },
     );
@@ -82,7 +74,7 @@ class _TerminalHeroState extends State<TerminalHero> {
 
   @override
   void dispose() {
-    _typingTimer?.cancel();
+    _typeTimer?.cancel();
     _cursorTimer?.cancel();
     super.dispose();
   }
@@ -91,127 +83,75 @@ class _TerminalHeroState extends State<TerminalHero> {
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final monoStyle = GoogleFonts.firaCode(fontSize: 13, height: 1.7);
 
+    // ClipRect guarantees nothing escapes the box even if a font renders
+    // a character slightly wider than expected (emoji, CJK fallback, etc.).
+    return ClipRect(
+      child: Container(
+        // Expand to the tight width given by the parent SizedBox.
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: isDark ? cs.surfaceContainerHighest : const Color(0xFF1E1E2E),
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(8),
+            bottomLeft: Radius.circular(8),
+            bottomRight: Radius.circular(20),
+          ),
+          border: Border.all(color: cs.outlineVariant.withValues(alpha: 0.3)),
+          boxShadow: [
+            BoxShadow(
+              color: cs.shadow.withValues(alpha: 0.15),
+              blurRadius: 20,
+              offset: const Offset(0, 8),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildTitleBar(isDark, cs),
+            _buildBody(cs),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // ── Title bar ──────────────────────────────────────────────────────────────
+
+  Widget _buildTitleBar(bool isDark, ColorScheme cs) {
+    final style = GoogleFonts.firaCode(
+      fontSize: 11,
+      color: Colors.white.withValues(alpha: 0.5),
+    );
     return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
       decoration: BoxDecoration(
         color: isDark
-            ? cs.surfaceContainerHighest
-            : const Color(0xFF1E1E2E),
+            ? cs.surfaceContainerHighest.withValues(alpha: 0.7)
+            : const Color(0xFF181825),
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(8),
-          bottomLeft: Radius.circular(8),
-          bottomRight: Radius.circular(20),
         ),
-        border: Border.all(
-          color: cs.outlineVariant.withValues(alpha: 0.3),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: cs.shadow.withValues(alpha: 0.15),
-            blurRadius: 20,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+      child: Row(
         children: [
-          // --- Title bar ---
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            decoration: BoxDecoration(
-              color: isDark
-                  ? cs.surfaceContainerHighest.withValues(alpha: 0.7)
-                  : const Color(0xFF181825),
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(20),
-                topRight: Radius.circular(8),
-              ),
-            ),
-            child: Row(
-              children: [
-                // Traffic light dots
-                Container(width: 12, height: 12,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFFF5F57), shape: BoxShape.circle)),
-                const SizedBox(width: 8),
-                Container(width: 12, height: 12,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFFFBD2E), shape: BoxShape.circle)),
-                const SizedBox(width: 8),
-                Container(width: 12, height: 12,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF28C840), shape: BoxShape.circle)),
-                const SizedBox(width: 16),
-                Text(
-                  '~/portfolio — zsh',
-                  style: monoStyle.copyWith(
-                    color: Colors.white.withValues(alpha: 0.5),
-                    fontSize: 11,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // --- Terminal body ---
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ..._visibleLines.asMap().entries.map((entry) {
-                  final line = entry.value;
-                  final isLast = entry.key == _visibleLines.length - 1;
-
-                  return RichText(
-                    text: TextSpan(
-                      children: [
-                        // Prompt
-                        TextSpan(
-                          text: line.prompt,
-                          style: monoStyle.copyWith(
-                            color: _promptColor(line.type, cs),
-                          ),
-                        ),
-                        // Text content
-                        TextSpan(
-                          text: line.text,
-                          style: monoStyle.copyWith(
-                            color: _textColor(line.type, cs),
-                          ),
-                        ),
-                        // Blinking cursor on the last line
-                        if (isLast && _currentLineIndex < _lines.length)
-                          TextSpan(
-                            text: _cursorVisible ? '█' : ' ',
-                            style: monoStyle.copyWith(
-                              color: cs.primary,
-                            ),
-                          ),
-                      ],
-                    ),
-                  );
-                }),
-                // Final cursor after all lines are typed
-                if (_currentLineIndex >= _lines.length)
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: '❯ ',
-                          style: monoStyle.copyWith(color: cs.primary),
-                        ),
-                        TextSpan(
-                          text: _cursorVisible ? '█' : ' ',
-                          style: monoStyle.copyWith(color: cs.primary),
-                        ),
-                      ],
-                    ),
-                  ),
-              ],
+          _dot(const Color(0xFFFF5F57)),
+          const SizedBox(width: 7),
+          _dot(const Color(0xFFFFBD2E)),
+          const SizedBox(width: 7),
+          _dot(const Color(0xFF28C840)),
+          const SizedBox(width: 14),
+          // Expanded clips the text before it can push past the row.
+          Expanded(
+            child: Text(
+              '~/portfolio — zsh',
+              style: style,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
             ),
           ),
         ],
@@ -219,32 +159,92 @@ class _TerminalHeroState extends State<TerminalHero> {
     );
   }
 
-  Color _promptColor(_LineType type, ColorScheme cs) {
-    return switch (type) {
-      _LineType.command => cs.primary,
-      _ => Colors.transparent,
-    };
+  Widget _dot(Color c) => Container(
+        width: 11, height: 11,
+        decoration: BoxDecoration(color: c, shape: BoxShape.circle),
+      );
+
+  // ── Body ───────────────────────────────────────────────────────────────────
+
+  Widget _buildBody(ColorScheme cs) {
+    final mono = GoogleFonts.firaCode(fontSize: 12.5, height: 1.65);
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ..._visible.asMap().entries.map((e) {
+            final line = e.value;
+            final isLast = e.key == _visible.length - 1;
+            final showCursor = isLast && _lineIdx < _script.length;
+
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 1),
+              // Text.rich — unlike bare RichText, it uses the layout
+              // constraints from its parent directly and wraps naturally
+              // when the available width is tight.
+              child: Text.rich(
+                TextSpan(children: [
+                  TextSpan(
+                    text: line.p,
+                    style: mono.copyWith(color: _promptColor(line.t, cs)),
+                  ),
+                  TextSpan(
+                    text: line.text,
+                    style: mono.copyWith(color: _textColor(line.t)),
+                  ),
+                  if (showCursor)
+                    TextSpan(
+                      text: _cursorOn ? '█' : ' ',
+                      style: mono.copyWith(color: cs.primary),
+                    ),
+                ]),
+                softWrap: true,
+                overflow: TextOverflow.clip,
+              ),
+            );
+          }),
+          // Idle cursor after all lines are typed
+          if (_lineIdx >= _script.length)
+            Text.rich(
+              TextSpan(children: [
+                TextSpan(
+                  text: '❯ ',
+                  style: mono.copyWith(color: cs.primary),
+                ),
+                TextSpan(
+                  text: _cursorOn ? '█' : ' ',
+                  style: mono.copyWith(color: cs.primary),
+                ),
+              ]),
+            ),
+        ],
+      ),
+    );
   }
 
-  Color _textColor(_LineType type, ColorScheme cs) {
-    return switch (type) {
-      _LineType.command => Colors.white.withValues(alpha: 0.9),
-      _LineType.success => const Color(0xFFA6E3A1),
-      _LineType.info => const Color(0xFF89B4FA),
-      _LineType.json => const Color(0xFFF9E2AF),
-    };
-  }
+  Color _promptColor(_T t, ColorScheme cs) =>
+      t == _T.cmd ? cs.primary : Colors.transparent;
+
+  Color _textColor(_T t) => switch (t) {
+        _T.cmd  => Colors.white.withValues(alpha: 0.9),
+        _T.ok   => const Color(0xFFA6E3A1),
+        _T.info => const Color(0xFF89B4FA),
+        _T.json => const Color(0xFFF9E2AF),
+      };
 }
 
-// ---------------------------------------------------------------------------
-// Data types
-// ---------------------------------------------------------------------------
+// ─────────────────────────────────────────────────────────────────────────────
+// Types
+// ─────────────────────────────────────────────────────────────────────────────
 
-enum _LineType { command, success, info, json }
+enum _T { cmd, ok, info, json }
 
-class _TerminalLine {
-  final String prompt;
+class _TLine {
+  final String p;     // prompt prefix
   final String text;
-  final _LineType type;
-  const _TerminalLine(this.prompt, this.text, this.type);
+  final _T t;         // line type
+  const _TLine(this.p, this.text, this.t);
 }
